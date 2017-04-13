@@ -1,0 +1,1 @@
+Please execute script "BikeDistributorDb.sql" before running solution.

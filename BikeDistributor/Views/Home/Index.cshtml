@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-4">
+            <h1>Bike Distributor</h1>
+            <p class="lead">I am refactoring and extending this app so Trainer Road will hire me!</p>
+            <p><a href="http://stackoverflow.com/jobs/139881/senior-software-engineer-c-sharp-mvc-xamarin-wpf-trainer-road-llc?sec=False&offset=0&cl=Trainer+Road" class="btn btn-primary btn-lg">The Job I Want &raquo;</a></p>
+            <p><a href="@Url.Action("Create","PlaceOrder")" class="btn btn-primary btn-lg">Place a bike order &raquo;</a></p>
+
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-4">
+            <br />
+            <br />
+            <img class="img-responsive center-block" src="~/Content/Images/pisgah.jpg" />
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>The Applicant</h2>
+        <p>Jamie McLaughlin is a polyglot programmer who likes to ride bikes uphill and suffer.</p>
+        <p><a class="btn btn-default" href="http://jamiemclaughlin.net">Jamie's Blog &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>What is this thing?</h2>
+        <p>
+            Bike Distributor is an admin application for managing bike orders and inventory. Click on one of the navigation links at the top of the page to modify the database.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>What's inside?</h2>
+        <p>Bike Distributor is a .NET MVC 6 application that utilizes an Entity Framework 6 code first approach.</p>
+    </div>
+</div>

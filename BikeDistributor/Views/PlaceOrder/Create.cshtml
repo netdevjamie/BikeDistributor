@@ -1,0 +1,155 @@
+﻿@model BikeDistributor.Models.PlaceOrderViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create Order</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Place Order</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Brand, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Brand, (SelectList)ViewBag.ListOfBrands, "-- Choose Brand --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Brand, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Model, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Model", new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), "-- Select Model --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Model, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BikeSize, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.BikeSize, new SelectList(
+                  new List<Object>{
+                       new { value = "Small" , text = "Small"  },
+                       new { value = "Medium" , text = "Medium" },
+                       new { value = "Large" , text = "Large"},
+                       new { value = "X-Large" , text = "X-Large"}
+
+
+                    },
+                  "value",
+                  "text",
+                   2), "-- Choose Size --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BikeSize, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PaymentMethod, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.PaymentMethod, new SelectList(
+                  new List<Object>{
+                       new { value = "Visa" , text = "Visa"  },
+                       new { value = "MasterCard" , text = "Master Card" },
+                       new { value = "PayPal" , text = "PayPal"},
+                       new { value = "Cash" , text = "Cash"}
+
+
+                    },
+                  "value",
+                  "text",
+                   2), "-- Choose Payment Method --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PaymentMethod, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Price, new { @readonly = "readonly", @class = "form-control" } )
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new {  @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Place Order" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $("#Brand").change(function () {
+
+            var brand = $("#Brand :selected").text();
+            $.ajax({
+                url: '@Url.Action("GetBikeModelsFromBrand", "PlaceOrder")',
+                type: "Post",
+                data: { Brand: brand },
+                success: function (listItems) {
+                    var modelDropdown = $('#Model');
+                    modelDropdown.empty();
+                    if (listItems.length > 0) {
+                        for (var i = 0; i < listItems.length; i++) {
+                            if (i == 0) {
+                                modelDropdown.append('<option value="' + i + '">--Select--</option>');
+                            }
+                            modelDropdown.append('<option value="' + listItems[i] + '">' + listItems[i] + '</option>');
+
+                        }
+
+                    }
+                    else {
+                        for (var i = 0; i < listItems.length; i++) {
+                            STSelectBox.append('<option value="' + listItems[i].Value + '">' + listItems[i].Text + '</option>');
+
+                        }
+                    }
+
+                }
+
+
+            });
+
+        });
+    });
+    $("#Model").change(function () {
+        $.ajax({
+            url: '@Url.Action("GetPriceFromModel", "PlaceOrder")',
+            type: "Post",
+            data: { Model: $("#Model").val() },
+            success: function (price) {
+               
+                $('#Price').val(price);
+            }
+
+
+        });
+
+    });
+</script>
+
+
